@@ -2,11 +2,11 @@ import { PWD } from '../../pwd'
 
 // 백준 10870번
 
-const fibo_fs = require('fs')
+const fiboFs = require('fs')
 
-const fibo_input = fibo_fs.readFileSync(`${PWD}/src/Week1/Day1/fibo.txt`).toString().trim()
+const fiboInput = fiboFs.readFileSync(`${PWD}/src/Week1/Day1/fibo.txt`).toString().trim()
 
-const targetNumber = Number(fibo_input)
+const targetNumber = Number(fiboInput)
 
 const fibo_map: Record<number, number> = {}
 
