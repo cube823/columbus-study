@@ -37,7 +37,6 @@ const solution = () => {
         return
       }
 
-      console.log('target', target)
       target++
     }
   }
