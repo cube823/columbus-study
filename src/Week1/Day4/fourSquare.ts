@@ -12,7 +12,7 @@ import { PWD } from '../../pwd'
 // 즉 O(NLogN) 이내로 풀어야 함
 
 const fs = require('fs')
-const input = Number(fs.readFileSync(`${PWD}/src/Week1/Day4/FourSqaure.txt`).toString().trim())
+const input = Number(fs.readFileSync(`${PWD}/src/Week1/Day4/fourSquare.txt`).toString().trim())
 
 let result = 0
 
