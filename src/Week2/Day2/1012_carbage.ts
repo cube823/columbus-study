@@ -52,17 +52,13 @@ const solution = ({ M, N, K, map }: Map) => {
   let target = 0
 
   // O(M*N)
-  const farm = Array.from({ length: N }).map((_) =>
-    Array.from({ length: M }).map(() => 0)
-  ) as number[][]
+  const farm = Array.from({ length: N }).map((_) => Array.from({ length: M }).map(() => 0))
 
   // O(K)
   for (let i = 0; i < map.length; i++) farm[map[i][1]][map[i][0]] = 1
 
   // O(M*N)
-  const visited = Array.from({ length: N }).map((_) =>
-    Array.from({ length: M }).map(() => false)
-  ) as boolean[][]
+  const visited = Array.from({ length: N }).map((_) => Array.from({ length: M }).map(() => false))
 
   const dfs = (x: number, y: number): void => {
     visited[y][x] = true
