@@ -11,64 +11,46 @@ import { PWD } from '../../pwd'
 // 토마토가 모두 익지는 못하는 상황이면 -1을 출력해야 한다.
 
 const fs = require('fs')
-const [condition, ...input] = fs
+const input = require('fs')
   .readFileSync(`${PWD}/src/Week2/Day2/7576_tomato.txt`)
   .toString()
-  .trim()
   .split('\n')
+  .map((s: string) => s.split(' '))
 
-const [M, N] = condition.split(' ').map(Number) as number[]
+const [M, N] = input.shift().map(Number) as number[]
 
-const tomatoes = Array.from({ length: N }).map((_) => Array.from({ length: M }).map(() => 0))
-const visited: boolean[][] = []
-
-for (let i = 0; i < tomatoes.length; i++) {
-  visited.push([])
-  for (let j = 0; j < tomatoes[i].length; j++) visited[i].push(false)
-}
-
-const coords = [] as number[][]
-
-for (let x = 0; x < M; x++) {
-  for (let y = 0; y < N; y++) {
-    const arr = input[y].split(' ').map(Number) as number[]
-
-    if (arr[x] === -1) visited[y][x] = true
-    if (arr[x] === 1) coords.push([x, y])
-
-    tomatoes[y][x] = arr[x]
-  }
-}
-
+const tomatoes: number[][] = input.map((s: string[]) => s.map((el) => Number(el)))
+const visited = Array.from({ length: N }).map((_) => Array.from({ length: M }).map(() => 0))
 const dy = [0, 0, 1, -1]
 const dx = [1, -1, 0, 0]
 
 let stack: number[][] = []
-let render = 0
-
-const dfs = (x: number, y: number) => {
-  visited[y][x] = true
-
-  for (let i = 0; i < 4; i++) {
-    const yy = y + dy[i]
-    const xx = x + dx[i]
-
-    if (xx < 0 || yy < 0 || xx >= M || yy >= N) continue
-    if (visited[yy][xx]) continue
-    if (tomatoes[yy][xx] === 0) {
-      visited[yy][xx] = true
-      stack.push([xx, yy])
-      render++
-    }
-  }
-}
 
 const solution = () => {
   let cnt = 0
+
+  const coords = [] as number[][]
+
+  for (let x = 0; x < M; x++) {
+    for (let y = 0; y < N; y++) {
+      if (tomatoes[y][x] === 0) visited[y][x] = -1
+      if (tomatoes[y][x] === 1) coords.push([x, y])
+    }
+  }
+
   while (coords.length) {
     const [x, y] = coords.pop() as number[]
 
-    dfs(x, y)
+    for (let i = 0; i < 4; i++) {
+      const yy = y + dy[i]
+      const xx = x + dx[i]
+
+      if (xx < 0 || yy < 0 || xx >= M || yy >= N) continue
+      if (visited[yy][xx] === -1) {
+        visited[yy][xx] = 1
+        stack.push([xx, yy])
+      }
+    }
 
     if (!coords.length && stack.length) {
       while (stack.length) coords.push(stack.pop() as number[])
@@ -78,11 +60,10 @@ const solution = () => {
 
   for (let i = 0; i < visited.length; i++) {
     for (let j = 0; j < visited[i].length; j++) {
-      if (visited[i][j] === false) return -1
+      if (visited[i][j] === -1) return -1
     }
   }
 
-  console.log(render)
   return cnt
 }
 
