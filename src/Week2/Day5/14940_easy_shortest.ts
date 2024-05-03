@@ -25,16 +25,15 @@ const dx = [1, -1, 0, 0]
 const dy = [0, 0, 1, -1]
 
 const checkInGrid = ([xx, yy]: number[]) => {
-  if (xx < 0 || yy < 0 || xx > M - 1 || yy > N - 1) return false
+  if (xx < 0 || yy < 0 || xx > N - 1 || yy > M - 1) return false
   return true
 }
 
 const getStart = () => {
   for (let x = 0; x < N; x++) {
     for (let y = 0; y < M; y++) {
-      if (grid[y][x] === 2) {
-        grid[y][x] = 0
-        answers[y][x] = 0
+      if (grid[x][y] === 2) {
+        answers[x][y] = 0
         return [x, y]
       }
     }
@@ -52,8 +51,7 @@ const bfs = () => {
   while (queue.length) {
     const [x, y] = queue.shift() as number[]
 
-    if (visited[y][x]) continue
-    visited[y][x] = true
+    visited[x][y] = true
 
     for (let i = 0; i < 4; i++) {
       const xx = x + dx[i]
@@ -61,12 +59,19 @@ const bfs = () => {
 
       if (!checkInGrid([xx, yy])) continue
 
-      if (grid[yy][xx] === 0) answers[yy][xx] = 0
+      if (grid[xx][yy] === 0 && answers[xx][yy] === -1) answers[xx][yy] = 0
 
-      if (grid[yy][xx] === 1 && answers[yy][xx] === -1) {
-        answers[yy][xx] = answers[y][x] + 1
+      if (grid[xx][yy] === 1 && answers[xx][yy] === -1) {
+        answers[xx][yy] = answers[x][y] + 1
+        visited[xx][yy] = true
         queue.push([xx, yy])
       }
+    }
+  }
+
+  for (let x = 0; x < N; x++) {
+    for (let y = 0; y < M; y++) {
+      if (grid[x][y] === 0) answers[x][y] = 0
     }
   }
 }
