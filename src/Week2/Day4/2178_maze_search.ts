@@ -28,7 +28,6 @@ const solution = () => {
   )
 
   queue.push([0, 0])
-  const coord: number[][] = []
 
   while (queue.length) {
     const [x, y] = queue.shift() as number[]
@@ -47,7 +46,6 @@ const solution = () => {
       if (xx < 0 || yy < 0 || xx > M - 1 || yy > N - 1) continue
 
       if (!visited[yy][xx] && maze[yy][xx]) {
-        coord.push([xx, yy])
         queue.push([xx, yy])
 
         counts[yy][xx] = counts[y][x] + 1
