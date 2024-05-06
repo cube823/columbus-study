@@ -27,11 +27,10 @@ const [N, K] = fs
 // X 가 0 이하일 때
 
 const dx = [1, -1, 2]
-const MAX = 2 * 10 ** 5
+const MAX = K + 2
+const visited = Array.from({ length: MAX }).map(() => false)
 
 const solution = () => {
-  const visited = Array.from({ length: MAX }).map(() => false)
-
   let minCnt = 10 ** 5
   let count = 10 ** 5
 
@@ -41,28 +40,38 @@ const solution = () => {
   const queue = [{ currentTime, currentCnt }]
 
   while (queue.length) {
-    const { currentTime, currentCnt } = queue.pop() as { currentTime: number; currentCnt: number }
+    const { currentTime, currentCnt } = queue.shift() as {
+      currentTime: number
+      currentCnt: number
+    }
+
+    if (currentCnt > minCnt) continue
+    if (currentTime < 0) continue
+    if (currentTime > MAX - 1) continue
+
+    visited[currentTime] = true
 
     if (currentTime === K) {
-      console.log(currentTime, currentCnt)
-
+      if (visited[Math.ceil(currentTime / 2)]) {
+        visited[Math.ceil(currentTime / 2)] = false
+      }
+      if (visited[Math.floor(currentTime / 2)]) {
+        visited[Math.floor(currentTime / 2)] = false
+      }
       if (currentCnt < minCnt) {
         minCnt = currentCnt
         count = 1
-      } else if (currentCnt === minCnt) {
-        count += 1
-      }
+      } else if (currentCnt === minCnt) count += 1
 
       continue
     }
 
     for (let i = 0; i < 3; i++) {
       const xx = i === 2 ? currentTime * dx[i] : currentTime + dx[i]
-      if (visited[xx] || xx > visited.length - 1) continue
-      visited[xx] = true
-
+      if (xx > MAX - 1) continue
+      if (xx < 0) continue
       if (currentCnt + 1 > minCnt) continue
-      if (currentTime > K && xx > K) continue
+      if (visited[xx]) continue
 
       queue.push({ currentTime: xx, currentCnt: currentCnt + 1 })
     }
@@ -71,4 +80,6 @@ const solution = () => {
   return { minCnt, count }
 }
 
-console.log(solution())
+const { minCnt, count } = solution()
+console.log(minCnt)
+console.log(count)
