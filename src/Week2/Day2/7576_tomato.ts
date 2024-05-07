@@ -10,7 +10,6 @@ import { PWD } from '../../pwd'
 // 만약, 저장될 때부터 모든 토마토가 익어있는 상태이면 0을 출력해야 하고,
 // 토마토가 모두 익지는 못하는 상황이면 -1을 출력해야 한다.
 
-const fs = require('fs')
 const input = require('fs')
   .readFileSync(`${PWD}/src/Week2/Day2/7576_tomato.txt`)
   .toString()
