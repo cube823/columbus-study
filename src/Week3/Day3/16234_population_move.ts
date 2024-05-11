@@ -65,7 +65,7 @@ const solution = () => {
         }
 
         coords.forEach(([x, y]) => {
-          grid[x][y] = Math.ceil(sum / coords.length)
+          grid[x][y] = Math.floor(sum / coords.length)
         })
       }
     }
