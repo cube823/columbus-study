@@ -8,19 +8,6 @@ const [N, ...input] = fs
   .trim()
   .split('\n')
 
-/**
- * 1 로 이루어진 group 은 항상 2개 이상이다.
- * K group 과 L group 의 끝에 인접해야 한다.
- *
- * grouping 을 한 후
- * visited 를 제외한 상하좌우 면이 0 인 좌표를 구한다.
- *
- * Start 좌표를 (sx, sy), Destination 좌표를 (fx, fy) 라고 해보자.
- * sxx = sx + dx[i], syy = sy+dy[i], ffx = fx + fx[i], ffy = fy + fy[i]
- *
- * (ssx, ssy), (ffx, ffy) 를 포함하여 최단 갯수를 찾는다.
- */
-
 const LENGTH = Number(N)
 
 const grid = input.map((str: string) => str.split(' ').map(Number)) as number[][]
@@ -98,8 +85,7 @@ const findRoad = (sx: number, sy: number, tx: number, ty: number) => {
     if (cnt >= answer) return 100 * 100
 
     if (x === tx && y === ty) {
-      console.log(cnt)
-      return cnt
+      return cnt - 2
     }
 
     for (let i = 0; i < 4; i++) {
@@ -117,6 +103,12 @@ const findRoad = (sx: number, sy: number, tx: number, ty: number) => {
   return 1
 }
 
+let currentLen = 100 * 100
+let currentSX = 0
+let currentSY = 0
+let currentTX = 0
+let currentTY = 0
+
 for (let i = 0; i < islands.length - 1; i++) {
   const island = islands[i]
 
@@ -128,11 +120,20 @@ for (let i = 0; i < islands.length - 1; i++) {
 
       for (let jj = 0; jj < targetIslands.length; jj++) {
         const [tx, ty] = targetIslands[jj]
-        const cnt = findRoad(sx, sy, tx, ty)
-        if (answer > cnt) answer = cnt
+
+        const len = Math.abs(sx - tx) + Math.abs(sy - ty)
+        if (currentLen > len) {
+          currentLen = len
+          currentSX = sx
+          currentSY = sy
+          currentTX = tx
+          currentTY = ty
+        }
       }
     }
   }
 }
 
-console.log(answer - 2)
+const cnt = findRoad(currentSX, currentSY, currentTX, currentTY)
+
+console.log(cnt)
