@@ -2,7 +2,7 @@ import { PWD } from '../../pwd'
 
 const fiboFs = require('fs')
 
-const fiboInput = fiboFs.readFileSync(`${PWD}/src/Week4/Day1/fibo2.txt`).toString().trim()
+const fiboInput = fiboFs.readFileSync(`${PWD}/src/Week4/Day1/2748_fibo2.txt`).toString().trim()
 
 const targetNumber = Number(fiboInput)
 
